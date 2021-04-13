@@ -1,34 +1,36 @@
-import { loadUsersInTerminal, loadDataUsersInDB } from './Srcs/load'
+//import { loadUsersInTerminal, loadDataUsersInDB } from './Srcs/load'
+import Koa, { Context } from 'koa'
+import Router from 'koa-router'
+import render from './Srcs/render'
+import Connect from './Srcs/Model/connect'
 
+import { LoadUsers } from './Srcs/load'
+
+const app = new Koa()
+const router = new Router()
+Connect()
+
+app.use(render)
 /*
-    In Client Terminal
+    router function
 */
-/*
-const users = loadUsersInTerminal()
-const cursus = users.filter(user => user.cursus_users.length > 1)
-
-console.log(cursus.length)
-
-const member = cursus.filter(user => user.cursus_users[1].grade === "Member")
-console.log(member.map(user => user.login))
-*/
-
-/*
-    In DB Connect
-*/
-const main = async () => {
-    const users = await loadDataUsersInDB()
-    if (users)
-        console.log(users.length)
-    else
-        console.log("error in load")
-    /*
-    const h3 = document.createElement('h3')
-    const text = document.createTextNode(`${users[0].login}`)
-    h3.appendChild(text);
-    document.body.appendChild(h3)
-    */
-    
+const main = async (ctx) => {
+    const users = await LoadUsers();
+    if (!users)
+        await ctx.render('404')
+    else 
+        await ctx.render('index' , { users: users })
 }
+router.get('/', main)
+app.use(router.routes())
 
-main()
+
+
+app.use((ctx: Context) => {
+    ctx.body = 'hello world'
+})
+
+app.listen(4000, () => {
+    console.log("server ready")
+})
+
