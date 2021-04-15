@@ -1,11 +1,21 @@
 <html>
     <head>
         <title>42Static</title>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
     </head>
     <body>
         <h1>TEST</h1>
-        {% for user in users %}
-            <p>{{ user.login }}</p>
-        {% endfor %}
+        <svg width="500" height="500"></svg>
+        <script type="text/javascript">
+            const svg = d3.select("svg")
+            const users = <%- JSON.stringify(users) %>
+            users.forEach((user, i) => {
+                svg.append('rect')
+                    .attr('height', user.wallet)
+                    .attr('width', 2)
+                    .attr('x', 5 * i)
+                    .attr('y', 100 - user.wallet)
+            })
+        </script>
     </body>
 </html>
