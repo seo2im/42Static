@@ -1,5 +1,4 @@
 import { Users } from './Model/Schema'
-import { tUser } from '../Types'
 
 const LoadUsers = async () => {
     try {

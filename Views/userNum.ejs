@@ -1,25 +1,22 @@
 <html>
     <head>
-        <title>42Static</title>
-        <script src="https://d3js.org/d3.v6.min.js"></script>
-        <link rel="stylesheet" href="/style.css">
+        <%- include('./header') %>
     </head>
     <body>
-        <h1 id="main">MAIN</h1>
         <ul id="list">
         </ul>
         <script type="text/javascript">
             const list = document.querySelector('#list')
             const frag = document.createDocumentFragment()
-            const urls = <%- JSON.stringify(list) %>
-            urls.forEach(url => {
+            const users = <%- JSON.stringify(users) %>
+            for ( key in users ) {
                 const li = document.createElement('li')
                     li.insertAdjacentHTML(
                     'beforeend',
-                    `<a href="${url}">${url.slice(1)}</a>`
+                    `<p>${key}: ${users[key].length}</p>`
                 )
                 frag.appendChild(li)
-            })
+            }
             list.appendChild(frag)
         </script>
     </body>
