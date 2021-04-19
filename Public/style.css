@@ -24,7 +24,7 @@ header h1 {
 
 section {
     margin: auto;
-    width: 500px;
+    width: 1000px;
     text-align: center;
 }
 section #grid {
@@ -50,4 +50,12 @@ section #grid {
 
 .card:hover {
     animation: slideUp 0.1s forwards;  
+}
+
+.bar {
+    fill: #00babc;
+}
+
+.barText {
+    font-weight: bold;
 }

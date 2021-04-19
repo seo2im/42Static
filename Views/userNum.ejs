@@ -4,41 +4,48 @@
     </head>
     <body>
         <%- include('./header') %>
-        <div class="canvas"></div>
-        <ul id="list">
-        </ul>
+        <section>
+            <h1 id="title">Number of subject user</h1>
+            <div class="canvas"></div>
+            <ul id="list">
+            </ul>
+        </section>
         <script type="text/javascript">
             const users = <%- JSON.stringify(users) %>
+            const width = 1000;
+            const height = 800;
 
             const svg = d3.select('.canvas')
-            .append('svg').attr('width', 1000).attr('height', 2000)
+            .append('svg').attr('width', width).attr('height', height)
 
-            const margin = { top: 20, right: 20, bottom: 100, left: 100 }
-            const graphWidth = 1000 - margin.left - margin.right
-            const graphHeight = 2000 - margin.top - margin.bottom
+            const yAxis = d3.scaleBand()
+            .domain(Object.keys(users).reverse())
+            .range([800, 0])
+            .padding(0.3)
 
-            const graph = svg.append('g')
-            .attr("width", graphWidth)
-            .attr("height", graphHeight)
-            .attr("transform", `translate(${margin.left}, ${margin.top})`)
+            svg.append('g')
+            .attr('transform', 'translate(90, 10)')
+            .call(d3.axisLeft(yAxis))
             
-            const xAxisGroup = graph
-            .append("g")
-            .attr("transform", `translate(0, ${graphHeight})`); // x축 아래로 translate
-            const yAxisGroup = graph.append("g");
-
-            const list = document.querySelector('#list')
-            const frag = document.createDocumentFragment()
-            
-            for ( key in users ) {
-                const li = document.createElement('li')
-                    li.insertAdjacentHTML(
-                    'beforeend',
-                    `<p>${key}: ${users[key].length}</p>`
-                )
-                frag.appendChild(li)
+            let i = 0
+            for (key in users) {
+                svg.append('rect')
+                .attr('class', 'bar')
+                .attr('y', yAxis(key) + yAxis.bandwidth() / 2)
+                .attr('height', yAxis.bandwidth())
+                .attr('width', users[key].length * (1000 / 200))
+                .attr('x', 90)
+                i++
             }
-            list.appendChild(frag)
+
+            for (key in users) {
+                svg.append('text')
+                .attr('class', 'barText')
+                .data([users[key].length])
+                .text((key) => key)
+                .attr('y', yAxis(key) + yAxis.bandwidth() + 5)
+                .attr('x', 100)
+            }
         </script>
     </body>
 </html>
