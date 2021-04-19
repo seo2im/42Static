@@ -1,24 +1,32 @@
 <html>
     <head>
-        <title>42Static</title>
-        <script src="https://d3js.org/d3.v6.min.js"></script>
-        <link rel="stylesheet" href="/style.css">
+        <%- include('./head') %>
     </head>
     <body>
-        <h1 id="main">MAIN</h1>
-        <ul id="list">
-        </ul>
+        <header>
+            <%- include('./header') %>
+        </header>
+        <section>
+            <h1>List of Static Data</h1>
+            <div id="grid">
+            </div>
+        </section>
+        
         <script type="text/javascript">
-            const list = document.querySelector('#list')
+            const list = document.querySelector('#grid')
             const frag = document.createDocumentFragment()
             const urls = <%- JSON.stringify(list) %>
             urls.forEach(url => {
-                const li = document.createElement('li')
-                    li.insertAdjacentHTML(
+                const card = document.createElement('div')
+                card.insertAdjacentHTML(
                     'beforeend',
-                    `<a href="${url}">${url.slice(1)}</a>`
+                    `<p>${url.slice(1)}</p>`
                 )
-                frag.appendChild(li)
+                card.classList.add('card')
+                card.onclick = () => {
+                    location.href = `${url}`
+                }
+                frag.appendChild(card)
             })
             list.appendChild(frag)
         </script>

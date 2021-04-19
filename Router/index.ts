@@ -12,6 +12,9 @@ const index = async (ctx) => {
     await ctx.render('./index.ejs')
 }
 
+/*
+For loginProcess dev env is no need
+
 router.get('/', index)
 router.get('/login/42', passport.authenticate('42'))
 router.get('/login/42/return',
@@ -20,7 +23,8 @@ router.get('/login/42/return',
         failureRedirect: '/'
     }),
 )
-router.get('/main', isLoggedIn ,main)
+*/
+router.get('/', main) //router.get('/main', isLoggined, main)
 /*
     Set your router
 */

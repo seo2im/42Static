@@ -1,8 +1,53 @@
-#main {
-    color: red;
-    font-size: 100px;
+body {
+    font-family: 'Commissioner';
+    margin: 0;
+    padding: 0;
 }
 
-body {
-    background-color: black;
+header {
+    display: flex;
+    background-color: #292D39;
+    height: 70px;
+    
+    color: white;
+}
+
+header #logo {
+    display: block;
+    width: 70px;
+    height: 70px;
+    margin: auto 10px;
+}
+header h1 {
+    margin-left: 30px;
+}
+
+section {
+    margin: auto;
+    width: 500px;
+    text-align: center;
+}
+section #grid {
+    display: grid;
+}
+
+.card {
+    width: 200px;
+    height: 150px;
+    background-color: #292D39;
+    color: white;
+    padding: 20px;
+}
+
+@keyframes slideUp{
+    from {
+        margin-top: 0px;
+    } to {
+        margin-top: -10px;
+    }
+    
+}
+
+.card:hover {
+    animation: slideUp 0.1s forwards;  
 }
