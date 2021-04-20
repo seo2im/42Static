@@ -5,10 +5,10 @@ dotenv.config()
 /*
     load fron DB
 */
-const URL: string = process.env.DB_URL ? process.env.DB_URL : ''
-console.log(URL)
+const URL = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@localhost:27017/admin`
 const Connect = async () => {
     await mongoose.connect(URL, {
+        dbName: '42Static',
         useNewUrlParser: true,
         useUnifiedTopology: true,
     }).then(() => {
