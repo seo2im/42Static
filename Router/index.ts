@@ -3,7 +3,7 @@ import Router from 'koa-router'
 import passport from '../Passport/passport42'
 import main from './main'
 import * as custom from '../Custom'
-import { curveMonotoneX } from 'd3'
+
 
 const router = new Router()
 const isLoggedIn = async (ctx: Context, next) => {
