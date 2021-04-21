@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <%- include('./head') %>
+    </head>
+    <body>
+        <%- include('./header') %>
+        <section>
+            <h1 id="title">InOut Graph</h1>
+            <div class="canvas"></div>
+            <ul id="list">
+            </ul>
+        </section>
+        <script type="text/javascript">
+            const inOutLog = <%- JSON.stringify(clusterInOutUsers) %>
+            const ul = document.querySelector('#list')
+
+            const dummy = inOutLog.filter(e => e.day === 210402 && e.location === 0)
+            console.log(inOutLog)
+            const frag = document.createDocumentFragment()
+            dummy.forEach(({ timestamp, id, location }) => {
+                const li = document.createElement("li")
+                const hour = parseInt(timestamp / 3600)
+                const min = parseInt((timestamp % 3600) / 60)
+                li.insertAdjacentHTML(
+                    "beforeend",
+                    `<div>
+                        <p>${id}</p>  
+                        <p>"개포"</p>
+                        <p>${hour}:${min}</p>
+                    </div>`
+                )
+                frag.appendChild(li)
+            })
+            ul.appendChild(frag)
+        </script>
+    </body>
+</html>

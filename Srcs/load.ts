@@ -1,4 +1,4 @@
-import { Users } from './Model/Schema'
+import { Users, ClusterInOut } from './Model/Schema'
 
 const LoadUsers = async () => {
     try {
@@ -10,4 +10,15 @@ const LoadUsers = async () => {
     }
 }
 
-export { LoadUsers }
+const LoadClusterInOut = async () => {
+    try {
+        const cluseterInOut = await ClusterInOut.find()
+        return cluseterInOut
+    } catch (err) {
+        console.log(err)
+        return []
+    }
+}
+
+export { LoadUsers, LoadClusterInOut }
+

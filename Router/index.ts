@@ -37,5 +37,6 @@ router.get('/main', isLoggedIn, main)
     Set your router
 */
 router.get('/userNum', isLoggedIn, custom.userNum)
+router.get('/clusterInOut', isLoggedIn, custom.clusterInOut)
 
 export default router
