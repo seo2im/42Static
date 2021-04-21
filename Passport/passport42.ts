@@ -6,6 +6,7 @@ passport.use(new Strategy({
     clientSecret: process.env.FT_SECRET,
     callbackURL: process.env.RETURN_URL,
 }, (accessToken, refreshToken, profile, done) => {
+    
     return done(null, profile)
 }))
 passport.serializeUser((user, done) => {

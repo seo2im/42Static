@@ -1,30 +1,38 @@
+import { Context } from 'koa'
 import Router from 'koa-router'
 import passport from '../Passport/passport42'
 import main from './main'
 import * as custom from '../Custom'
+import { curveMonotoneX } from 'd3'
 
 const router = new Router()
-const isLoggedIn = async (ctx, next) => {
-    console.log(ctx.isAuthenticated())
-    await next()
+const isLoggedIn = async (ctx: Context, next) => {
+    if (ctx.isAuthenticated())
+        await next()
+    else
+        ctx.redirect('/')
 }
 const index = async (ctx) => {
     await ctx.render('./index.ejs')
 }
-
 /*
-For loginProcess dev env is no need
-
+    Auth process
+*/
 router.get('/', index)
 router.get('/login/42', passport.authenticate('42'))
 router.get('/login/42/return',
     passport.authenticate('42', { 
-        successRedirect: '/main',
         failureRedirect: '/'
     }),
+    async (ctx) => {
+        console.log('redirect')
+        await ctx.login({id : 1})
+        ctx.redirect('/main')
+    }
 )
-*/
-router.get('/', main) //router.get('/main', isLoggined, main)
+
+//router.get('/', main)
+router.get('/main', isLoggedIn, main)
 /*
     Set your router
 */
