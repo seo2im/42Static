@@ -1,6 +1,7 @@
 <html>
     <head>
         <%- include('./head') %>
+        
     </head>
     <body>
         <%- include('./header') %>
@@ -14,8 +15,54 @@
             const inOutLog = <%- JSON.stringify(clusterInOutUsers) %>
             const ul = document.querySelector('#list')
 
-            const dummy = inOutLog.filter(e => e.day === 210402 && e.location === 0)
-            console.log(inOutLog)
+            const Gaepo = inOutLog.filter(e => e.location === 0)
+            const Seocho = inOutLog.filter(e => e.location === 1)
+
+            let num = 0;
+            const GaeoLog = {};
+            const SeochoLog = {};
+            Gaepo.forEach((e, i) => {
+                if (Object.keys(GaeoLog).indexOf(String(e.day)) === -1) {
+                    GaeoLog[e.day] = [[e.timestamp, num + e.inout ]]
+                } else {
+                    GaeoLog[e.day].push([ e.timestamp, num + e.inout ])
+                    
+                }
+                num += e.inout
+            })
+            num = 0;
+            Seocho.forEach((e, i) => {
+                if (Object.keys(SeochoLog).indexOf(String(e.day)) === -1) {
+                    SeochoLog[e.day] = [[ parseInt(e.timestamp / 60) - 600, 1000 - ((num + e.inout) * 10) ]]
+                } else {
+                    SeochoLog[e.day].push([ parseInt(e.timestamp / 60) - 600, 1000 - ((num + e.inout) * 10) ])
+                }
+                num += e.inout
+            })            
+            const line = d3.line()(SeochoLog[210419])
+            
+            console.log(line)
+            console.log(Seocho.filter(e => e.day === 210419))
+            console.log(SeochoLog[210419])
+
+            const svg = d3.select('.canvas')
+            .append('svg')
+            .attr('width', 1000).attr('height', 1000)
+            .append('path')
+            .attr('d', line)
+            .attr('stroke', 'black')
+            .attr("stroke-width", 1)
+            .attr('fill', 'none')
+            
+            
+
+            
+            
+            
+
+
+
+            /*
             const frag = document.createDocumentFragment()
             dummy.forEach(({ timestamp, id, location }) => {
                 const li = document.createElement("li")
@@ -32,6 +79,7 @@
                 frag.appendChild(li)
             })
             ul.appendChild(frag)
+            */
         </script>
     </body>
 </html>
