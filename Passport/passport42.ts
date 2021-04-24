@@ -13,7 +13,6 @@ passport.serializeUser((user, done) => {
     done(null, user)
 })
 passport.deserializeUser((user: Express.User, done) => {
-    console.log(user)
     done(null, user)
 })
 

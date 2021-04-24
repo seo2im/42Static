@@ -18,36 +18,44 @@
             const Gaepo = inOutLog.filter(e => e.location === 0)
             const Seocho = inOutLog.filter(e => e.location === 1)
 
-            let num = 0;
-            const GaeoLog = {};
-            const SeochoLog = {};
-            Gaepo.forEach((e, i) => {
-                if (Object.keys(GaeoLog).indexOf(String(e.day)) === -1) {
-                    GaeoLog[e.day] = [[e.timestamp, num + e.inout ]]
-                } else {
-                    GaeoLog[e.day].push([ e.timestamp, num + e.inout ])
-                    
-                }
-                num += e.inout
-            })
-            num = 0;
-            Seocho.forEach((e, i) => {
-                if (Object.keys(SeochoLog).indexOf(String(e.day)) === -1) {
-                    SeochoLog[e.day] = [[ parseInt(e.timestamp / 60) - 600, 1000 - ((num + e.inout) * 10) ]]
-                } else {
-                    SeochoLog[e.day].push([ parseInt(e.timestamp / 60) - 600, 1000 - ((num + e.inout) * 10) ])
-                }
-                num += e.inout
-            })            
-            const line = d3.line()(SeochoLog[210419])
+            const GaepoPoint = {};
+            const SeochoPoint = {};
             
-            console.log(line)
-            console.log(Seocho.filter(e => e.day === 210419))
-            console.log(SeochoLog[210419])
+            let num = 0;
+            let hour = 0;
+            Gaepo.forEach(log => {
+                if (Object.keys(GaepoPoint).indexOf(String(log.day)) === -1) {
+                    hour = 0
+                    GaepoPoint[log.day] = { [hour] : num }
+                }
+                while ((hour + 1) * 3600 < log.timestamp)
+                {
+                    GaepoPoint[log.day][hour + 1] = num
+                    hour += 1
+                }   
+                num += log.inout
+                GaepoPoint[log.day][hour + 1] = num
+            })
+            Seocho.forEach(log => {
+                if (Object.keys(SeochoPoint).indexOf(String(log.day)) === -1) {
+                    hour = 0
+                    SeochoPoint[log.day] = { [hour] : num }
+                }
+                while ((hour + 1) * 3600 < log.timestamp)
+                {
+                    SeochoPoint[log.day][hour + 1] = num
+                    hour += 1
+                }   
+                num += log.inout
+                SeochoPoint[log.day][hour + 1] = num
+            })
 
+            console.log(Object.entries(SeochoPoint['210419']))
+
+            const line = d3.line()(Object.entries(SeochoPoint['210419']).map(([key, value]) => [key * 10, 300 - value]))
             const svg = d3.select('.canvas')
             .append('svg')
-            .attr('width', 1000).attr('height', 1000)
+            .attr('width', 500).attr('height', 500)
             .append('path')
             .attr('d', line)
             .attr('stroke', 'black')
