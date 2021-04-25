@@ -36,6 +36,8 @@
                 num += log.inout
                 GaepoPoint[log.day][hour + 1] = num
             })
+            num = 0;
+            hour = 0;
             Seocho.forEach(log => {
                 if (Object.keys(SeochoPoint).indexOf(String(log.day)) === -1) {
                     hour = 0
@@ -50,17 +52,51 @@
                 SeochoPoint[log.day][hour + 1] = num
             })
 
-            console.log(Object.entries(SeochoPoint['210419']))
 
-            const line = d3.line()(Object.entries(SeochoPoint['210419']).map(([key, value]) => [key * 10, 300 - value]))
-            const svg = d3.select('.canvas')
-            .append('svg')
-            .attr('width', 500).attr('height', 500)
-            .append('path')
-            .attr('d', line)
-            .attr('stroke', 'black')
-            .attr("stroke-width", 1)
-            .attr('fill', 'none')
+            const margin = {top: 50, right: 50, bottom: 50, left: 50}
+            const width = 500 - margin.left - margin.right
+            const height = 500 - margin.top - margin.bottom
+
+            const xScale = d3.scaleLinear().domain([0, 24]).range([0, width])
+            const yScale = d3.scaleLinear().domain([0, 150]).range([height, 0])
+            const line = d3.line()
+            .x((d, i) => xScale(d[0]))
+            .y((d, i) => yScale(d[1]))
+            
+            const container = d3.select('.canvas')
+            let svg;
+            
+            for (let key in SeochoPoint) {
+                svg = container.append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`)
+
+                svg.append('g')
+                .attr('transform', `translate(0, ${height})`)
+                .attr('class', 'xScale')
+                .call(d3.axisBottom(xScale))
+
+                svg.append('g')
+                .attr('class', 'yScale')
+                .call(d3.axisLeft(yScale))
+            
+                svg.append('path')
+                .datum(Object.entries(SeochoPoint[key]).map(([key, value]) => [key, value]))
+                .attr('d', line)
+                .attr('stroke', 'blue')
+                .attr("stroke-width", 1)
+                .attr('fill', 'none')
+
+                svg.append('path')
+                .datum(Object.entries(GaepoPoint[key]).map(([key, value]) => [key, value]))
+                .attr('d', line)
+                .attr('stroke', 'red')
+                .attr("stroke-width", 1)
+                .attr('fill', 'none')
+            }
+            
             
             
 
