@@ -64,37 +64,73 @@
             .y((d, i) => yScale(d[1]))
             
             const container = d3.select('.canvas')
-            let svg;
+            let svg = {}
             
             for (let key in SeochoPoint) {
-                svg = container.append('svg')
+                svg[key] = container.append('svg')
                 .attr('width', width + margin.left + margin.right)
                 .attr('height', height + margin.top + margin.bottom)
                 .append('g')
                 .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-                svg.append('g')
+                svg[key].append('text').text(key)
+
+                svg[key].append('g')
                 .attr('transform', `translate(0, ${height})`)
                 .attr('class', 'xScale')
                 .call(d3.axisBottom(xScale))
 
-                svg.append('g')
+                svg[key].append('g')
                 .attr('class', 'yScale')
                 .call(d3.axisLeft(yScale))
             
-                svg.append('path')
+                svg[key].append('path')
                 .datum(Object.entries(SeochoPoint[key]).map(([key, value]) => [key, value]))
                 .attr('d', line)
                 .attr('stroke', 'blue')
-                .attr("stroke-width", 1)
+                .attr("stroke-width", 5)
                 .attr('fill', 'none')
-
-                svg.append('path')
+                svg[key].selectAll('.dot blue')
+                .data(Object.entries(SeochoPoint[key]).map(([key, value]) => [key, value]))
+                .enter().append('circle')
+                .attr('class', 'dot blue')
+                .attr('cx', d => xScale(d[0]))
+                .attr('cy', d => yScale(d[1]))
+                .attr('r', 5)
+                .attr('fill', 'blue')
+                .on('mouseover', (e, data) => {
+                    svg[key].append('text').text(data[1])
+                    .attr('x', e.target.getAttribute('cx'))
+                    .attr('y', e.target.getAttribute('cy'))
+                    .attr('class', 'hover')
+                })
+                .on('mouseout', () => {
+                    svg[key].selectAll('.hover').remove()
+                })
+                
+                svg[key].append('path')
                 .datum(Object.entries(GaepoPoint[key]).map(([key, value]) => [key, value]))
                 .attr('d', line)
                 .attr('stroke', 'red')
-                .attr("stroke-width", 1)
+                .attr("stroke-width", 5)
                 .attr('fill', 'none')
+                svg[key].selectAll('.dot red')
+                .data(Object.entries(GaepoPoint[key]).map(([key, value]) => [key, value]))
+                .enter().append('circle')
+                .attr('class', 'dot red')
+                .attr('cx', d => xScale(d[0]))
+                .attr('cy', d => yScale(d[1]))
+                .attr('r', 5)
+                .attr('fill', 'red')
+                .on('mouseover', (e, data) => {
+                    svg[key].append('text').text(data[1])
+                    .attr('x', e.target.getAttribute('cx'))
+                    .attr('y', e.target.getAttribute('cy'))
+                    .attr('class', 'hover')
+                })
+                .on('mouseout', () => {
+                    svg[key].selectAll('.hover').remove()
+                })
             }
             
             

@@ -24,9 +24,11 @@ Show 42seoul members data visualization.
 
 누구라도 참여하실 수 있으나 이 프로젝트에서 무언가를 담당하고 싶으신지는 정하고 와 주시면 좋겠습니다. 
 
-### Koa - Template Engine - D3
+### Express - Template Engine - D3
 
-Koa only send data / D3 work in browser(template html).
+Express only send data / D3 work in browser(template html).
 So Html get d3 script in my node_modules.
 
 ![42static default](https://user-images.githubusercontent.com/73334068/115319820-9246c580-a1bb-11eb-9376-f6e3dc184686.gif)
+
+
