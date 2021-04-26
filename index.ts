@@ -1,43 +1,37 @@
 //import { loadUsersInTerminal, loadDataUsersInDB } from './Srcs/load'
-import Koa from 'koa'
+import express from 'express'
 import path from 'path'
-import views from 'koa-views'
-import koaStatic from 'koa-static'
 import Connect from './Srcs/Model/connect'
 
-import bodyParser from 'koa-bodyparser'
-import session from 'koa-session'
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
 
 import passport from './Passport/passport42'
 import router from './Router'
 /*
 *    DB CONNECT & INITIALIZE APP
 */
-const app = new Koa()
+const app = express()
 Connect()
 /*
-*   SESSION SETTING
+*   SESSION & Body-parser SETTING 
 */
-app.keys = ['key'] /* Have to know what this setting need */
-app.use(bodyParser())
-app.use(koaStatic('Public'))
-const sessionConfig = {
-    
-}
-app.use(session(sessionConfig, app))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, '/Public')))
+app.use(session({ resave: false, saveUninitialized: false, secret: 'some' }))
 /*
 *   PASSPORT SETTING
 */
 app.use(passport.initialize())
-app.use(passport.session()) 
+app.use(passport.session())
 /*
     ROUTING & RENDERRING engine
 */
-const render =  views(path.join(__dirname, './Views'), {
-    map: { html: 'ejs' }
-})
-app.use(render)
-app.use(router.routes())
+app.set('views', path.join(__dirname, 'Views'));
+app.set('view engine', 'ejs');
+app.use(router)
 /*
     OPEN SERVER
 */

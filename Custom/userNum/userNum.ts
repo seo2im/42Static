@@ -1,7 +1,7 @@
 import { LoadUsers } from '../../Srcs/load'
 import { getInProgressSubjectUser } from '../../Utils'
 
-const userNum = async (ctx) => {
+const userNum = async (req, res, next) => {
     const users = await LoadUsers()
  
     const Libft = getInProgressSubjectUser(users, 'Libft')
@@ -31,7 +31,7 @@ const userNum = async (ctx) => {
     const ft_transcendence = getInProgressSubjectUser(users, 'ft_transcendence')
     
 
-    await ctx.render('./userNum.ejs',
+    res.render('./userNum.ejs',
         {
             users: { 
                 Libft,
