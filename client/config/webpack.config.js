@@ -20,6 +20,13 @@ module.exports = {
                 test: /\.tsx?$/,
                 loader: 'awesome-typescript-loader',
             },
+            {
+                test: /\.svg$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 8192
+                }
+            }
         ]
     },
     devServer : {
