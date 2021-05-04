@@ -7,9 +7,7 @@ passport.use(new Strategy({
     callbackURL: process.env.RETURN_URL,
     passReqToCallback: true,
 }, (req, accessToken, refreshToken, profile, done) => {
-    req.session.accessToken = accessToken
-    req.session.refreshToken = refreshToken
-    return done(null, profile)
+    return done(null, profile.id)
 }))
 passport.serializeUser((user, done) => {
     done(null, user)

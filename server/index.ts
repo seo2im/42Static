@@ -31,7 +31,14 @@ app.use(passport.session())
 */
 app.set('views', path.join(__dirname, 'Views'));
 app.set('view engine', 'ejs');
+
 app.use(router)
+app.get('/debug', (req, res) => {
+    
+    res.send(JSON.stringify({
+        'token': req.session,
+    }, null, 4));
+})
 /*
     OPEN SERVER
 */

@@ -25,7 +25,7 @@ module.exports = {
     devServer : {
 		historyApiFallback : true,
 		contentBase : path.join(__dirname, '../build'),
-		port : 4000,
+		port : 4001,
 	},
     plugins: [
         new HtmlWebpackPlugin({
